@@ -1,2 +1,2 @@
-myvenv/
-.ipynb_checkpoints
+env/
+notebooks/
