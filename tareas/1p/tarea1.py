@@ -48,5 +48,5 @@ def create_line(point_a, point_b):
     return np.cross(a, b)
 
 
-print(crossing_point( np.array([2,6,2]), np.array([-5,8,4]) ))
-print(create_line( np.array([-7,-4]), np.array([3,1]) ))
+# print(crossing_point( np.array([2,6,2]), np.array([-5,8,4]) ))
+# print(create_line( np.array([-7,-4]), np.array([3,1]) ))
