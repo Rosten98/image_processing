@@ -41,10 +41,6 @@ def rot_tra_scale(point, new_point, deg, scale_factor):
     return sRT@point
 
 
-def quaternion_rotation():
-    pass
-
-
 point = np.array([5, 5])
 translated_point = np.array([1, 1])
 deg_to_rotate = 90
