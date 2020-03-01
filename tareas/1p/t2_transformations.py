@@ -5,6 +5,7 @@ def grades_to_radians(deg):
     rad = (deg*np.pi)/180
     return rad
 
+
 def translate(point, new_point):
     assert (len(point) == 2), ' Original point is not a 2D point '
     assert (len(new_point) == 2), ' Translated point is not a 2D point '
@@ -12,6 +13,7 @@ def translate(point, new_point):
     point = np.array([[1, 0, point[0]],[0, 1, point[1]]])
     new_point = euclidean2D_to_homogeneus(new_point)
     return point@new_point
+
 
 def rotate(point, deg):
     assert (len(point) == 2), ' Point is not a 2D point '
@@ -27,6 +29,7 @@ def rotate_translate(point, new_point, deg):
     RT = np.array([[np.cos(angle),-np.sin(angle),new_point[0]],[np.sin(angle),np.cos(angle),new_point[1]]])
     point = euclidean2D_to_homogeneus(point)
     return RT@point
+
 
 def rot_tra_scale(point, new_point, deg, scale_factor):
     assert (len(point) == 2), ' Original Point is not a 2D point '
