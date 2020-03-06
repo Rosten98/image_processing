@@ -41,6 +41,37 @@ def rot_tra_scale(point, new_point, deg, scale_factor):
     return sRT@point
 
 
+def q_multiply(q1,q2):
+    assert(4 == len(q1)), 'The argument taken is not a 3D point'
+    assert(4 == len(q2)), 'The argument taken is not a 3D point'
+    (w1,x1,y1,z1) = q1
+    (w2,x2,y2,z2) = q2
+    w = (w1*w2 - x1*x2 - y1*y2 - z1*z2)
+    x = (w1*x2 + x1*w2 + y1*z2 - z1*y2)
+    y = (w1*y2 - x1*z2 + y1*w2 + z1*x2)
+    z = (w1*z2 + x1*y2 - y1*x2 + z1*w2)
+    qx = [w,x,y,z]
+    return qx
+
+
+def grades_radians(qr):
+    assert(4 == len(qr)), 'The argument taken is not a valid point'
+    assert(qr[0] >= -360 or qr[0] <= 360), 'The degree to convert is not valid'
+    rad = (qr[0]*np.pi)/180
+    qr = np.array([np.cos(rad/2),qr[1],qr[2],qr[3]])
+    return qr
+
+
+def quaternions(qx,qr,qp):
+    assert(4 == len(qp)), 'The argument taken is not a valid point'
+    assert(4 == len(qx)), 'The argument taken is not a valid point'
+    q_asterisk = np.array([qx[0],(qx[1]*-1),(qx[2]*-1),(qx[3]*-1)])
+    q_abs = np.array([qx[0]**2,qx[1]**2,qx[2]**2,qx[3]**2])
+    qi = q_asterisk / q_abs
+    qpq_ = qr * qp * qi
+    return qpq_
+
+
 point = np.array([5, 5])
 translated_point = np.array([1, 1])
 deg_to_rotate = 90
@@ -49,3 +80,14 @@ print("Translation", translate(point, translated_point))
 print("Rotation", rotate(point, deg_to_rotate))
 print("Rotation & Translation", rotate_translate(point, translated_point, deg_to_rotate))
 print("Rotation, Translation & Scale", rot_tra_scale(point, translated_point, deg_to_rotate, scale_factor))
+
+# Quaternions
+q1 = np.array([1,3,5,7])
+q2 = np.array([2,4,6,8])
+qx = q_multiply(q1,q2)
+print('q1 * q2: ',qx)
+qr = np.array([90,5,5,5])
+qr = grades_radians(qr)
+print('The rotation vector is: ',qr)
+qp = np.array([5,5,5,5])
+print('The point quaternion is: ',quaternions(qx,qr,qp))
