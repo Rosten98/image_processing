@@ -54,10 +54,10 @@ def q_multiply(q1,q2):
     return qx
 
 
-def grades_radians(qr):
+def rotation_vector(qr):
     assert(4 == len(qr)), 'The argument taken is not a valid point'
     assert(qr[0] >= -360 or qr[0] <= 360), 'The degree to convert is not valid'
-    rad = (qr[0]*np.pi)/180
+    rad = grades_to_radians(qr[0])
     qr = np.array([np.cos(rad/2),qr[1],qr[2],qr[3]])
     return qr
 
@@ -87,7 +87,11 @@ q2 = np.array([2,4,6,8])
 qx = q_multiply(q1,q2)
 print('q1 * q2: ',qx)
 qr = np.array([90,5,5,5])
-qr = grades_radians(qr)
+qr = rotation_vector(qr)
 print('The rotation vector is: ',qr)
 qp = np.array([5,5,5,5])
 print('The point quaternion is: ',quaternions(qx,qr,qp))
+
+# q1 * q2:  [-96, 8, 20, 20]
+# The rotation vector is:  [0.70710678 5.         5.         5.        ]
+# The rotated quaternion is:  [-0.03682848 -3.125      -1.25       -1.25      ]
