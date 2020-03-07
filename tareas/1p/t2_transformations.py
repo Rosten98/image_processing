@@ -42,8 +42,6 @@ def rot_tra_scale(point, new_point, deg, scale_factor):
 
 
 def q_multiply(q1,q2):
-    assert(4 == len(q1)), 'The argument taken is not a 3D point'
-    assert(4 == len(q2)), 'The argument taken is not a 3D point'
     (w1,x1,y1,z1) = q1
     (w2,x2,y2,z2) = q2
     w = (w1*w2 - x1*x2 - y1*y2 - z1*z2)
@@ -54,21 +52,43 @@ def q_multiply(q1,q2):
     return qx
 
 
+def q_asterisk(q):
+    q = np.array([q[0],(q[1]*-1),(q[2]*-1),(q[3]*-1)])
+    return q
+
+
+def q_abs(q):
+    q = q[0]**2 + q[1]**2 + q[2]**2 + q[3]**2
+    return q
+
+
+def q_inverse(q_abs, q_asterisk):
+    (w, x, y, z) = q_asterisk
+    q  = np.array([w/q_abs, x/q_abs, y/q_abs, z/q_abs])
+    return q
+
+
 def rotation_vector(qr):
-    assert(4 == len(qr)), 'The argument taken is not a valid point'
-    assert(qr[0] >= -360 or qr[0] <= 360), 'The degree to convert is not valid'
     rad = grades_to_radians(qr[0])
     qr = np.array([np.cos(rad/2),qr[1],qr[2],qr[3]])
     return qr
 
 
-def quaternions(qx,qr,qp):
-    assert(4 == len(qp)), 'The argument taken is not a valid point'
-    assert(4 == len(qx)), 'The argument taken is not a valid point'
-    q_asterisk = np.array([qx[0],(qx[1]*-1),(qx[2]*-1),(qx[3]*-1)])
-    q_abs = np.array([qx[0]**2,qx[1]**2,qx[2]**2,qx[3]**2])
-    qi = q_asterisk / q_abs
-    qpq_ = qr * qp * qi
+def quaternion(axis, rad):
+    q = np.array([np.cos(rad/2), axis[0], axis[1], axis[2]])
+    return q
+
+
+def rotate3D(point, axis, deg):
+    rad = grades_to_radians(deg)
+    q = quaternion(axis, rad)
+    q_ast = q_asterisk(q)
+    q_ab = q_abs(q)
+    q_inv = q_inverse(q_ab, q_ast)
+    point = np.append(0, point)
+    qp = q_multiply(q, point)
+    qpq_ = q_multiply(qp, q_inv)
+    del qpq_[0]
     return qpq_
 
 
@@ -82,16 +102,8 @@ print("Rotation & Translation", rotate_translate(point, translated_point, deg_to
 print("Rotation, Translation & Scale", rot_tra_scale(point, translated_point, deg_to_rotate, scale_factor))
 
 # Quaternions
-q1 = np.array([1,3,5,7])
-q2 = np.array([2,4,6,8])
-qx = q_multiply(q1,q2)
-print('q1 * q2: ',qx)
-qr = np.array([90,5,5,5])
-qr = rotation_vector(qr)
-print('The rotation vector is: ',qr)
-qp = np.array([5,5,5,5])
-print('The point quaternion is: ',quaternions(qx,qr,qp))
-
-# q1 * q2:  [-96, 8, 20, 20]
-# The rotation vector is:  [0.70710678 5.         5.         5.        ]
-# The rotated quaternion is:  [-0.03682848 -3.125      -1.25       -1.25      ]
+# Quaternions
+point = np.array([5, 5, 10])
+axis = np.array([1, 1, 1])
+deg = 180
+print('The rotated quaternion is: ', rotate3D(point, axis, deg))
