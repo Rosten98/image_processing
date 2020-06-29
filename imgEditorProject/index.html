@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <title>Image Editor Project</title>
+    </head>
+    <link rel="stylesheet" href="main.css">
+    <body>
+        <nav>
+          <span class="logo"> Image Editor Project </span>
+        </nav>
+
+        <!-- <div class="container">
+
+          <h1>Bienvenido a Image Editor Project</h1>
+          <p>Comienza a editar fotos a tu gusto. Para comenzar, sube una imagen, una vez subida aparecerán los controles en un menú de lado izquierdo</p>
+
+          <input type=file name=file id="img-upload">
+          <input type=submit value="Editar imagen" id="edit-img">
+
+
+          <img src="" width="70%" id="img-to-edit">
+
+          <div class="edit-controls">
+            <h3>Controls</h3>
+            <input type="radio" id="color-scale" name="color-selection" value="color-scale">
+            <label for="color-scale">Color</label>
+            <input type="radio" id="gray-scale" name="color-selection" value="gray-scale">
+            <label for="gray-scale">Gray Scale</label>
+            <br>
+            <label for="">Red</label>
+            <input type="range" name="" value=""><br>
+            <label for="">Green</label>
+            <input type="range" name="" value=""><br>
+            <label for="">Blue</label>
+            <input type="range" name="" value=""><br>
+            <br>
+            <label for="">Blur</label>
+            <input type="range" name="" value=""><br>
+          </div>
+
+        </div> -->
+
+        <div class="container">
+          <p id="status">OpenCV.js is loading...</p>
+          <div class="inputoutput">
+            <img id="imageSrc" alt="No Image" width="50%"/>
+            <div class="caption">
+              Image source
+              <input type="file" id="fileInput" name="file" />
+            </div>
+          </div>
+          <div class="inputoutput">
+            <canvas id="canvasOutput" ></canvas>
+            <div class="caption">canvasOutput</div>
+          </div>
+          <input type="radio" name="color" onclick="editImage(this.value)" value="gray-scale">Gray scale<br>
+        </div>
+
+        <script src="main.js" type="text/javascript"></script>
+        <script async src="opencv.js" onload="onOpenCvReady()" type="text/javascript"></script>
+    </body>
+</html>
