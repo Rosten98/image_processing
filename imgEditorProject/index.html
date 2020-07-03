@@ -44,14 +44,14 @@
                   <input type="range" name="resize" id="resize-range" min="1" max="200" class="slider" oninput="resize()" value="100">
                 </div>
 
-                <!-- <div id="color-controls">
-                  <label for="">Red(<span></span>)</label>
-                  <input type="range" name="red" id="red-range" min="0" max="255" class="slider">
-                  <label for="">Green(<span></span>)</label>
-                  <input type="range" name="green" id="green-range" min="0" max="255" class="slider">
-                  <label for="">Blue(<span></span>)</label>
-                  <input type="range" name="blue" id="blue-range" min="0" max="255" class="slider">
-                </div> -->
+                <div class="laplacian controls" style="display:none" id="laplacianDiv">
+                  <input type="radio" name="filters" onclick="toggleLaplacian()" id="check-laplacian">
+                  <label for="check-laplacian">Laplacian</label>
+                  <input type="range" name="laplacian" id="ksize-range" min="1" max="31" step="2" class="slider" oninput="laplacian()" value="1">
+                  <label for="ksize-range" id="ksize">ksize</label>
+                  <input type="range" name="laplacian" id="scale-range" min="0" max="100" class="slider" oninput="laplacian()" value="0">
+                  <label for="scale-range" id="scale">scale</label>
+                </div>
 
                 <div class="blur controls">
                   <input type="radio" name="filters" onclick="toggleBlur()" id="check-blur">

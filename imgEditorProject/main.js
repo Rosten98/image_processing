@@ -1,29 +1,3 @@
-// let editBtn, imgUpload, imgEdit
-//
-// window.addEventListener('DOMContentLoaded', (event) => {
-//     console.log('DOM fully loaded and parsed')
-//
-//     editBtn = document.getElementById('edit-img')
-//     imgUpload = document.getElementById('img-upload')
-//     imgEdit = document.getElementById('img-to-edit')
-//
-//     editBtn.disabled = true
-//
-//     imgUpload.addEventListener('change', function() {
-//       if (this.files && this.files[0]) {
-//           var img = document.querySelector('img');  // $('img')[0]
-//           img.src = URL.createObjectURL(this.files[0]); // set src to blob url
-//           img.onload = imageIsLoaded;
-//       }
-//     });
-// });
-//
-//
-// function imageIsLoaded() {
-//   console.log(this.src);  // blob url
-//   // update width and height ...
-// }
-
 let imgElement = document.getElementById('imageSrc')
 let inputElement = document.getElementById('fileInput')
 let colorControls = document.getElementById('color-controls')
@@ -67,10 +41,12 @@ function editImage(colorType) {
     case "color-scale":
       console.log(colorType)
       colorScale();
+      toggleLaplacianCheck(false)
       break;
     case "gray-scale":
       console.log(colorType)
       grayScale();
+      toggleLaplacianCheck(true)
       break;
   }
 }
@@ -79,22 +55,42 @@ function resetComponents() {
     let checkBlur = document.getElementById('check-blur')
     let checkOtsu = document.getElementById('check-otsu')
     let checkErode = document.getElementById('check-erode')
+    let checkLaplacian = document.getElementById('check-laplacian')
 
     let rangeBlur = document.getElementById('blur-range')
     let rangeOtsu = document.getElementById('otsu-range')
     let rangeErode = document.getElementById('erode-range')
+    let rangeLapKS = document.getElementById('ksize-range')
+    let rangeLapS = document.getElementById('scale-range')
+    let ksize = document.getElementById('ksize')
+    let scale = document.getElementById('scale')
 
     checkBlur.checked = false
     checkOtsu.checked = false
     checkErode.checked = false
+    checkLaplacian.checked = false
 
     rangeBlur.value = 0
     rangeOtsu.value = 0
     rangeErode.value = 0
+    rangeLapKS.value = 1
+    rangeLapS.value = 0
 
     rangeBlur.style.display = "none"
     rangeOtsu.style.display = "none"
     rangeErode.style.display = "none"
+    rangeLapKS.style.display = "none"
+    rangeLapS.style.display = "none"
+    ksize.style.display = "none"
+    scale.style.display = "none"
+}
+
+function toggleLaplacianCheck(show) {
+  let laplacianCheck = document.getElementById('laplacianDiv')
+  if (show)
+    laplacianCheck.style.display = "flex"
+  else
+    laplacianCheck.style.display = "none"
 }
 
 function grayScale() {
@@ -132,6 +128,37 @@ function resize() {
   // dst.delete();
 }
 
+function toggleLaplacian(){
+  let rangeLapKS = document.getElementById('ksize-range')
+  let rangeLapS = document.getElementById('scale-range')
+  let checkLaplacian = document.getElementById('check-laplacian')
+  let ksize = document.getElementById('ksize')
+  let scale = document.getElementById('scale')
+
+  if(checkLaplacian.checked){
+    resetComponents()
+    checkLaplacian.checked = true
+    rangeLapS.style.display = "initial"
+    rangeLapKS.style.display = "initial"
+    ksize.style.display = "initial"
+    scale.style.display = "initial"
+    matOriginal = mat
+  }
+}
+
+function laplacian() {
+  let ksizeSlider = document.getElementById('ksize-range')
+  let scaleSlider = document.getElementById('scale-range')
+  let src = matOriginal
+  let dst = new cv.Mat();
+  // You can try more different parameters
+  cv.Laplacian(src, dst, cv.CV_8U,  parseInt(ksizeSlider.value), parseInt(scaleSlider.value), 0, cv.BORDER_DEFAULT);
+  cv.imshow('canvasOutput', dst);
+  // src.delete();
+  dst.delete();
+}
+
+
 function toggleBlur(){
   let blurRange = document.getElementById('blur-range')
   let checkBlur = document.getElementById('check-blur')
@@ -140,10 +167,6 @@ function toggleBlur(){
     checkBlur.checked = true
     blurRange.style.display = "initial"
     matOriginal = mat
-  }
-  else{
-    blurRange.style.display = "none"
-    cv.imshow('canvasOutput', matOriginal)
   }
 }
 
@@ -172,8 +195,6 @@ function toggleOtsu(){
     otsuRange.style.display = "initial"
     matOriginal = mat
   }
-  else
-    otsuRange.style.display = "none"
 }
 
 function otsu() {
@@ -196,8 +217,6 @@ function toggleErode(){
     erodeRange.style.display = "initial"
     matOriginal = mat
   }
-  else
-    erodeRange.style.display = "none"
 }
 
 function erode() {
