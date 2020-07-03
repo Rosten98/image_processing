@@ -231,6 +231,21 @@ function erode() {
   dst.delete();
 }
 
+function download() {
+  let canvas = document.getElementById('canvasOutput')
+  // var filename = prompt("Guardar como...","Nombre del archivo");
+  if (canvas.msToBlob){ //para internet explorer
+      var blob = canvas.msToBlob();
+      window.navigator.msSaveBlob(blob, filename + ".png" );// la extensión de preferencia pon jpg o png
+  } else {
+      let link = document.getElementById("download");
+      //Otros navegadores: Google chrome, Firefox etc...
+      link.href = canvas.toDataURL("image/png");// Extensión .png ("image/png") --- Extension .jpg ("image/jpeg")
+      link.download = "myImage.png";
+      console.log("Imagen descargada");
+  }
+}
+
 
 // Check if opencv is already loaded
 function onOpenCvReady() {

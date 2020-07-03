@@ -17,12 +17,12 @@
           <div class="container">
             <div id="status"></div>
             <div class="inputoutput">
-              <img id="imageSrc" alt="No Image" width="50%"/>
+              <img id="imageSrc" alt="No Image" width="80%"/>
               <div class="caption">
                 Image source
                 <input type="file" id="fileInput" name="file" />
               </div>
-              <button type="button" name="button" id="open-modal">Edit image</button>
+              <button type="button" name="button" id="open-modal" >Edit image</button>
             </div>
 
             <div class="modal-edit" id="modal">
@@ -71,7 +71,11 @@
                   <input type="range" name="erode" id="erode-range" min="0" max="20" class="slider" oninput="erode()" value="0" style="display:none">
                 </div>
 
-                <button type="button" name="button" id="descargar">Descargar</button>
+                <button type="button" name="button" id="descargar" onclick="download()">
+                  <a id="download">
+                    Descargar
+                  </a>
+                </button>
                 <div class="inputoutput">
                   <canvas id="canvasOutput"></canvas>
                 </div>
